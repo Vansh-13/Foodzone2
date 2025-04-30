@@ -2,49 +2,65 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'vansh967/frontend2'
+        // Set environment variables for your DockerHub credentials (if needed)
+        DOCKER_HUB_USERNAME = 'your-docker-hub-username'
+        DOCKER_HUB_PASSWORD = 'your-docker-hub-password'
     }
 
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                echo 'Cloning the GitHub repository...'
+                echo "Checking out the code from GitHub..."
                 git 'https://github.com/Vansh-13/Foodzone2.git'
             }
         }
 
-        stage('Login to DockerHub') {
+        stage('Build Docker Images') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    bat "echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin"
+                script {
+                    echo "Building backend, frontend, and admin Docker images..."
+                    sh 'docker-compose -f docker-compose.yml build'
                 }
             }
         }
 
-        stage('Pull Latest Image') {
+        stage('Push Docker Images') {
             steps {
-                echo 'Pulling latest Docker image...'
-                bat "docker pull %IMAGE_NAME%"
+                script {
+                    echo "Pushing Docker images to Docker Hub..."
+
+                    // Login to DockerHub
+                    sh "echo $DOCKER_HUB_PASSWORD | docker login --username $DOCKER_HUB_USERNAME --password-stdin"
+                    
+                    // Push backend image
+                    sh 'docker push vansh967/backend2'
+                    
+                    // Push frontend image
+                    sh 'docker push vansh967/frontend2'
+                    
+                    // Push admin image
+                    sh 'docker push vansh967/admin2'
+                }
             }
         }
 
         stage('Deploy with Docker Compose') {
             steps {
-                echo 'Deploying application using Docker Compose...'
-                bat '''
-                    docker-compose down
-                    docker-compose up -d
-                '''
+                script {
+                    echo "Deploying services with Docker Compose..."
+                    sh 'docker-compose -f docker-compose.yml up -d'
+                }
             }
         }
     }
 
     post {
         success {
-            echo '🚀 Deployment successful!'
+            echo "Deployment successful!"
         }
+
         failure {
-            echo '❌ Deployment failed. Please check logs.'
+            echo "Deployment failed. Please check the logs for more details."
         }
     }
 }
