@@ -1,0 +1,129 @@
+.login-up {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    background-color: #00000090;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+  
+  .login-up-container {
+    width: 100%;
+    max-width: 400px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 25px 30px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #808080;
+    animation: fadeIn 0.3s ease-in-out;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .login-up-container input[type="text"],
+  .login-up-container input[type="email"],
+  .login-up-container input[type="password"],
+  .login-up-container button {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .login-up-container button {
+    background: linear-gradient(45deg, #ff6f61, #ffbb33);
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .login-up-container button:hover {
+    background: linear-gradient(45deg, #ff6f61, #ffbb33);
+  }
+  
+  .login-up-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .login-up-title h2 {
+    margin: 0;
+    color: black;
+  }
+  
+  .login-up-title img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+  
+  .login-up-codition {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+  }
+  
+  .login-up-container p span {
+   color:  #c47854;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  @media (max-width: 600px) {
+    .login-up-container {
+      padding: 20px;
+      font-size: 13px;
+      gap: 20px;
+    }
+  
+    .login-up-container input,
+    .login-up-container button {
+      font-size: 13px;
+      padding: 9px 10px;
+    }
+  
+    .login-up-title img {
+      width: 18px;
+      height: 18px;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  .custom-toast-success {
+    background-color: white !important;
+    color: green !important;
+    border-left: 5px solid green;
+  }
+  
+  .custom-toast-error {
+    background-color: white !important;
+    color: red !important;
+    border-left: 5px solid red;
+  }
+  
+  .custom-toast-body {
+    font-weight: 500;
+    font-family: sans-serif;
+  }
+  

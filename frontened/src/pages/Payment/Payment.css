@@ -1,0 +1,147 @@
+.payment-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 2rem;
+    gap: 2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  
+  /* ORDER SUMMARY */
+  .order-summary {
+    flex: 1;
+    min-width: 300px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    padding: 2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .order-summary h2 {
+    font-size: 1.8rem;
+    color: #222;
+    margin-bottom: 0.5rem;
+  }
+  
+  .order-summary h1 {
+    font-size: 2.3rem;
+    color: #0066ff;
+    margin-bottom: 1.5rem;
+  }
+  
+  .order-summary ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .order-summary li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  /* PAYMENT FORM */
+  .payment-form {
+    flex: 1;
+    min-width: 300px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    padding: 2rem;
+  }
+  
+  .payment-form h3 {
+    font-size: 1.6rem;
+    color: #222;
+    margin-bottom: 1.5rem;
+  }
+  
+  .payment-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  
+  .payment-form input,
+  .payment-form select {
+    padding: 0.9rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: 0.3s;
+    background-color: #f9f9f9;
+  }
+  
+  .payment-form input:focus,
+  .payment-form select:focus {
+    border-color: #0066ff;
+    background-color: #fff;
+    outline: none;
+  }
+  
+  .input-group {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .input-group input {
+    flex: 1;
+  }
+  
+  .payment-form button {
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #0066ff;
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .payment-form button:hover {
+    background-color: #004fcc;
+  }
+  
+  /* Toast Message */
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4caf50;
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    animation: fadeInOut 4s ease forwards;
+  }
+  
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(10px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(10px); }
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .payment-container {
+      flex-direction: column;
+    }
+  
+    .order-summary,
+    .payment-form {
+      width: 100%;
+    }
+  }
+  

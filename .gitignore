@@ -1,0 +1,13 @@
+# Ignore .env files
+*.env
+
+# Ignore node_modules
+node_modules/
+
+# Ignore build directories
+build/
+dist/
+
+# Ignore IDE settings (e.g., VSCode, IntelliJ)
+.vscode/
+.idea/
