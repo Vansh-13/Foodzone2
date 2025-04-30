@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building frontend Docker image...'
-                    bat "docker build -t ${IMAGE_NAME}:${TAG} ./frontend"  // Image ko frontend folder se build karna
+                    bat "docker build -t ${IMAGE_NAME}:${TAG} ./frontened"  // Image ko frontend folder se build karna
                 }
             }
         }
