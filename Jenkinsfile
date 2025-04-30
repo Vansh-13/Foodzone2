@@ -2,59 +2,59 @@ pipeline {
     agent any
 
     environment {
-        BACKEND_IMAGE = 'vansh967/backend2'
-        FRONTEND_IMAGE = 'vansh967/frontend2'
-        ADMIN_IMAGE = 'vansh967/admin2'
+        IMAGE_NAME = 'vansh967/frontend2'  // Updated image name
+        TAG = 'v1'
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'  // Your Docker Hub credentials
     }
 
     stages {
-        stage('Clone Repository') {
+        // Stage to clone the repository
+        stage('Clone Repo') {
             steps {
-                git 'https://github.com/Vansh-13/Foodzone2.git'
+                echo 'Cloning the repository...'
+                git 'https://github.com/Vansh-13/Foodzone2.git'  // Update with your actual repository
             }
         }
 
-        stage('Build Docker Images') {
+        // Stage to build the Docker image for frontend
+        stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build(env.BACKEND_IMAGE, './backened')
-                    docker.build(env.FRONTEND_IMAGE, './frontened')
-                    docker.build(env.ADMIN_IMAGE, './admin')
+                    echo 'Building frontend Docker image...'
+                    bat "docker build -t ${IMAGE_NAME}:${TAG} ./frontend"  // Build the image from the frontend directory
                 }
             }
         }
 
-        stage('Login to DockerHub and Push Images') {
+        // Stage to push the Docker image to DockerHub
+        stage('Push to DockerHub') {
             steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'dockerhub-credentials',
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    script {
-                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                        sh "docker push ${BACKEND_IMAGE}"
-                        sh "docker push ${FRONTEND_IMAGE}"
-                        sh "docker push ${ADMIN_IMAGE}"
+                script {
+                    withDockerRegistry(credentialsId: DOCKER_CREDENTIALS_ID, url: 'https://index.docker.io/v1/') {
+                        echo 'Pushing Docker image to DockerHub...'
+                        bat "docker push ${IMAGE_NAME}:${TAG}"  // Push the built image to Docker Hub
                     }
                 }
             }
         }
 
+        // Stage to deploy the frontend using Docker Compose (Optional)
         stage('Deploy with Docker Compose') {
             steps {
-                sh 'docker-compose down || true'
-                sh 'docker-compose up -d --build'
+                script {
+                    echo 'Deploying with Docker Compose...'
+                    bat "docker-compose -f docker-compose.yml up -d"  // Start the frontend container with Docker Compose
+                }
             }
         }
     }
 
     post {
         success {
-            echo '✅ Deployment successful from Foodzone2!'
+            echo 'Deployment successful!'
         }
         failure {
-            echo '❌ Deployment failed. Check the logs.'
+            echo 'Deployment failed. Check the logs for more details.'
         }
     }
 }
