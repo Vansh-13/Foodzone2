@@ -1,27 +1,21 @@
 pipeline {
     agent any
 
-    environment {
-        IMAGE_NAME = 'vansh967/frontend2'  // Docker image ka naam
-        TAG = 'v1'  // Docker image ka tag
-        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'  // Docker Hub credentials ID
-    }
-
     stages {
         // Stage to clone the repository
         stage('Clone Repo') {
             steps {
-                echo 'Cloning the repository...'
-                git 'https://github.com/Vansh-13/Foodzone2.git'  // Aapka repository URL
+                echo 'Cloning repository...'
+                git 'https://github.com/Vansh-13/Foodzone2.git'  // Repository URL
             }
         }
 
-        // Stage to build the Docker image for frontend
+        // Stage to build the Docker image
         stage('Build Docker Image') {
             steps {
                 script {
-                    echo 'Building frontend Docker image...'
-                    bat "docker build -t ${IMAGE_NAME}:${TAG} ./frontened"  // Image ko frontend folder se build karna
+                    echo 'Building Docker image...'
+                    bat 'docker build -t frontend2 .'  // Build the image without a tag
                 }
             }
         }
@@ -30,22 +24,8 @@ pipeline {
         stage('Push to DockerHub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        echo 'Pushing Docker image to DockerHub...'
-                        bat "docker tag ${IMAGE_NAME}:${TAG} ${DOCKER_USER}/${IMAGE_NAME}:${TAG}"  // Tagging the image with Docker Hub username
-                        bat "echo ${DOCKER_PASS} | docker login -u ${DOCKER_USER} --password-stdin"  // Login to Docker Hub
-                        bat "docker push ${DOCKER_USER}/${IMAGE_NAME}:${TAG}"  // Image ko push karna Docker Hub pe
-                    }
-                }
-            }
-        }
-
-        // Stage to deploy the frontend using Docker Compose (Optional)
-        stage('Deploy with Docker Compose') {
-            steps {
-                script {
-                    echo 'Deploying with Docker Compose...'
-                    bat "docker-compose -f docker-compose.yml up -d"  // Docker Compose se container start karna
+                    echo 'Pushing Docker image to DockerHub...'
+                    bat 'docker push frontend2'  // Push the image to DockerHub
                 }
             }
         }
