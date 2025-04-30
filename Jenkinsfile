@@ -1,22 +1,25 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = 'vansh967/frontend2'
+        DOCKER_CREDENTIALS_ID = 'dockerhub-credentials'  // Replace with your DockerHub credentials
+    }
+
     stages {
-        // Stage to clone the repository
+        // Stage to clone the repository (if applicable)
         stage('Clone Repo') {
             steps {
-                echo 'Cloning repository...'
-                git 'https://github.com/Vansh-13/Foodzone2.git'  // Repository URL
+                echo 'Cloning the repository...'
+                git 'https://github.com/Vansh-13/Foodzone2.git'  // Update with the actual repository URL if needed
             }
         }
 
-        // Stage to build the Docker image
+        // Stage to build the Docker image from frontend directory
         stage('Build Docker Image') {
             steps {
-                script {
-                    echo 'Building Docker image...'
-                    bat 'docker build -t frontend2 .'  // Build the image without a tag
-                }
+                echo 'Building Docker image...'
+                bat 'docker build -t ${IMAGE_NAME} ./frontened'  // Building Docker image from the frontend folder
             }
         }
 
@@ -24,9 +27,22 @@ pipeline {
         stage('Push to DockerHub') {
             steps {
                 script {
-                    echo 'Pushing Docker image to DockerHub...'
-                    bat 'docker push frontend2'  // Push the image to DockerHub
+                    withDockerRegistry(credentialsId: DOCKER_CREDENTIALS_ID, url: 'https://index.docker.io/v1/') {
+                        echo 'Pushing Docker image to DockerHub...'
+                        bat 'docker push ${IMAGE_NAME}'  // Push the Docker image to DockerHub
+                    }
                 }
+            }
+        }
+
+        // Stage to deploy using Docker Compose
+        stage('Deploy with Docker Compose') {
+            steps {
+                echo 'Deploying with Docker Compose...'
+                bat '''
+                    docker-compose -f C:/Users/Vansh Madaan/Desktop/QuickPick/docker-compose.yml down
+                    docker-compose -f C:/Users/Vansh Madaan/Desktop/QuickPick/docker-compose.yml up -d
+                '''
             }
         }
     }
